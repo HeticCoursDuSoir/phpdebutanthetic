@@ -12,11 +12,11 @@
     <body>
     
     <?php
+        $nameError = false; $firstnameError = false; $sexeError = false;
         //On récupère la méthode POST dans un tableau associatif clé = la valeur dans name de l'input // Valeur : valeur de l'input
         if(!empty($_POST)){
             //var_dump($_POST); //Permet d'afficher le contenu du tableau
             if(!empty($_POST['inputNom']) && !empty($_POST['inputPrenom']) && !empty($_POST['inputSexe'])){
-                $nameError = false; $firstnameError = false; $sexeError = false;
                 echo "<div class='alert alert-success pagination-centered'>Le formulaire est valide</div>";
                 // Je crée une connexion a la base de donnée
                 $mysqli = new mysqli("localhost", "root", "root", "confhetic",3306);
