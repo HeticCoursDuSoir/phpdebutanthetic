@@ -16,9 +16,10 @@
         if(!empty($_POST)){
             //var_dump($_POST); //Permet d'afficher le contenu du tableau
             if(!empty($_POST['inputNom']) && !empty($_POST['inputPrenom']) && !empty($_POST['inputSexe'])){
+                $nameError = false; $firstnameError = false; $sexeError = false;
                 echo "Le formulaire est valide";
                 // Je crée une connexion a la base de donnée
-                $mysqli = new mysqli("localhost", "root", "", "confhetic",3306);
+                $mysqli = new mysqli("localhost", "root", "root", "confhetic",3306);
 
                 //modification de l'encodage pour la gestion des accents
                 $mysqli->set_charset("utf8");
@@ -37,6 +38,9 @@
                 }
 
             }else{
+                if(empty($_POST['inputNom'])) $nameError = true;
+                if(empty($_POST['inputPrenom'])) $firstnameError = true;
+                if(empty($_POST['inputSexe'])) $sexeError = true;
                 echo "Le formulaire n'est pas valide";
             }
         }
@@ -54,26 +58,26 @@
             <div class="span4">
                    <form method="POST" action="" name="participant" class="form-horizontal">
 
-                  <div class="control-group">
+                  <div class="control-group <?php if($nameError) echo 'error'; ?>">
                     <label class="control-label" for="inputNom">Nom</label>
                     <div class="controls">
-                      <input type="text" id="inputNom" name="inputNom" placeholder="Veuilliez saisir votre Nom">
+                      <input type="text" id="inputNom" name="inputNom" placeholder="Veuilliez saisir votre Nom" value="<?php if($_POST['inputNom']) echo $_POST['inputNom']; ?>" >
                     </div>
                   </div>
 
-                 <div class="control-group">
+                 <div class="control-group <?php if($firstnameError) echo 'error'; ?>">
                     <label class="control-label" for="inputPrenom">Prenom</label>
                     <div class="controls">
-                      <input type="text" id="inputPrenom" name="inputPrenom" placeholder="Veuilliez saisir votre Prenom">
+                      <input type="text" id="inputPrenom" name="inputPrenom" placeholder="Veuilliez saisir votre Prenom" value="<?php if($_POST['inputPrenom']) echo $_POST['inputPrenom']; ?>"  >
                     </div>
                   </div>
 
-                 <div class="control-group">
+                 <div class="control-group  <?php if($sexeError) echo 'error'; ?>">
                     <label class="control-label" for="inputSexe">Sexe</label>
                     <div class="controls">
                         <select name="inputSexe">
-                            <option value="F">Femme</option>
-                            <option value="M">Homme</option>
+                            <option value="F" <?php if($_POST['inputSexe'] && $_POST['inputSexe']=='F') echo 'selected'; ?>>Femme</option>
+                            <option value="M" <?php if($_POST['inputSexe'] && $_POST['inputSexe']=='M') echo 'selected'; ?>>Homme</option>
                         </select>
                     </div>
                   </div>
@@ -97,7 +101,7 @@
             //Récupère les enregistrement des participants dans la base de donnée
 
             //connexion à la base de donnée
-            $mysqli = new mysqli("localhost", "root", "", "confhetic",3306);
+            $mysqli = new mysqli("localhost", "root", "root", "confhetic",3306);
            
             // définit l'encodage de rendu
             $mysqli->set_charset("utf8");
