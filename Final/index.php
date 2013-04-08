@@ -17,7 +17,7 @@
             //var_dump($_POST); //Permet d'afficher le contenu du tableau
             if(!empty($_POST['inputNom']) && !empty($_POST['inputPrenom']) && !empty($_POST['inputSexe'])){
                 $nameError = false; $firstnameError = false; $sexeError = false;
-                echo "Le formulaire est valide";
+                echo "<div class='alert alert-success pagination-centered'>Le formulaire est valide</div>";
                 // Je crée une connexion a la base de donnée
                 $mysqli = new mysqli("localhost", "root", "root", "confhetic",3306);
 
@@ -58,26 +58,26 @@
             <div class="span4">
                    <form method="POST" action="" name="participant" class="form-horizontal">
 
-                  <div class="control-group <?php if($nameError) echo 'error'; ?>">
+                  <div class="control-group <?php if(isset($nameError) && $nameError) echo 'error'; ?>">
                     <label class="control-label" for="inputNom">Nom</label>
                     <div class="controls">
-                      <input type="text" id="inputNom" name="inputNom" placeholder="Veuilliez saisir votre Nom" value="<?php if($_POST['inputNom']) echo $_POST['inputNom']; ?>" >
+                      <input type="text" id="inputNom" name="inputNom" placeholder="Veuillez saisir votre Nom" value="<?php if(isset($_POST['inputNom'])) echo $_POST['inputNom']; ?>" >
                     </div>
                   </div>
 
-                 <div class="control-group <?php if($firstnameError) echo 'error'; ?>">
+                 <div class="control-group <?php if(isset($firstnameError) && $firstnameError) echo 'error'; ?>">
                     <label class="control-label" for="inputPrenom">Prenom</label>
                     <div class="controls">
-                      <input type="text" id="inputPrenom" name="inputPrenom" placeholder="Veuilliez saisir votre Prenom" value="<?php if($_POST['inputPrenom']) echo $_POST['inputPrenom']; ?>"  >
+                      <input type="text" id="inputPrenom" name="inputPrenom" placeholder="Veuillez saisir votre Prenom" value="<?php if(isset($_POST['inputPrenom'])) echo $_POST['inputPrenom']; ?>"  >
                     </div>
                   </div>
 
-                 <div class="control-group  <?php if($sexeError) echo 'error'; ?>">
+                 <div class="control-group  <?php if(isset($sexeError) && $sexeError) echo 'error'; ?>">
                     <label class="control-label" for="inputSexe">Sexe</label>
                     <div class="controls">
                         <select name="inputSexe">
-                            <option value="F" <?php if($_POST['inputSexe'] && $_POST['inputSexe']=='F') echo 'selected'; ?>>Femme</option>
-                            <option value="M" <?php if($_POST['inputSexe'] && $_POST['inputSexe']=='M') echo 'selected'; ?>>Homme</option>
+                            <option value="F" <?php if(isset($_POST['inputSexe']) && $_POST['inputSexe']=='F') echo 'selected'; ?>>Femme</option>
+                            <option value="M" <?php if(isset($_POST['inputSexe']) && $_POST['inputSexe']=='M') echo 'selected'; ?>>Homme</option>
                         </select>
                     </div>
                   </div>
