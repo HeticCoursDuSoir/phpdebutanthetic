@@ -41,7 +41,7 @@
                 if(empty($_POST['inputNom'])) $nameError = true;
                 if(empty($_POST['inputPrenom'])) $firstnameError = true;
                 if(empty($_POST['inputSexe'])) $sexeError = true;
-                echo "Le formulaire n'est pas valide";
+                echo "<div class='alert alert-error pagination-centered'>Le formulaire n'est pas valide</div>";
             }
         }
 
