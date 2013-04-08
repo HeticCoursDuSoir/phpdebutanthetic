@@ -18,7 +18,7 @@
             if(!empty($_POST['inputNom']) && !empty($_POST['inputPrenom']) && !empty($_POST['inputSexe'])){
                 echo "Le formulaire est valide";
                 // Je crée une connexion a la base de donnée
-                $mysqli = new mysqli("localhost", "root", "root", "confhetic",8889);
+                $mysqli = new mysqli("localhost", "root", "", "confhetic",3306);
 
                 //modification de l'encodage pour la gestion des accents
                 $mysqli->set_charset("utf8");
@@ -97,33 +97,16 @@
             //Récupère les enregistrement des participants dans la base de donnée
 
             //connexion à la base de donnée
-            $mysqli = new mysqli("localhost", "root", "root", "confhetic",8889);
+            $mysqli = new mysqli("localhost", "root", "", "confhetic",3306);
            
             // définit l'encodage de rendu
             $mysqli->set_charset("utf8");
 
             // je crée ma requete sql
             $requeteSql = "SELECT * FROM participant";
-            /*
-            $result = $mysqli->query($requeteSQL,MYSQLI_USE_RESULT);
-
-            var_dump($row = $result->fetch_array());
-
-            if (!$result) {
-                printf("%s\n", $mysqli->error);
-                exit();
-            }        
-
-            Tableau numérique 
-            $row = $result->fetch_array(MYSQLI_NUM);
-            printf ("%s (%s)\n", $row[0], $row[1]);
-
-            Tableau associatif
-            $row = $result->fetch_array(MYSQLI_ASSOC);
-            printf ("%s (%s)\n", $row["Name"], $row["CountryCode"]);
-
-            */
-
+            
+            // j'exécute ma requete sql
+            $result = $mysqli->query($requeteSql);
         ?>
         <table class="table table-striped">
             <thead>
@@ -135,14 +118,14 @@
                 </tr>
             </thead>
             <tbody>
-                <?php //foreach ?>
+                <?php while ($row = $result->fetch_assoc()) : ?>
                 <tr>
-                    <td>1</td>
-                    <td>La rosa</td>
-                    <td>Kévin</td>
-                    <td>M</td>
+                    <td><?= $row['participant_id'] ?></td>
+                    <td><?= $row['participant_nom'] ?></td>
+                    <td><?= $row['participant_prenom'] ?></td>
+                    <td><?= $row['participant_sexe'] ?></td>
                 </tr>
-                <?php //foreach ?>
+                <?php endwhile?>
             </tbody>
         </tr>
         </table>
