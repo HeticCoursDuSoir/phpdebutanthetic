@@ -13,34 +13,49 @@
     
     <?php
         $nameError = false; $firstnameError = false; $sexeError = false;
-        //On récupère la méthode POST dans un tableau associatif clé = la valeur dans name de l'input // Valeur : valeur de l'input
+        // On récupère la méthode POST dans un tableau associatif de type [Clé] <=> [Valeur]. 
+        // La clé est le name="" de l'input et value="" sa valeur.
+        // Si mon tableau associatif est diférent de vide alors je rentre dans mon test.
         if(!empty($_POST)){
-            //var_dump($_POST); //Permet d'afficher le contenu du tableau
+
+            //var_dump($_POST); // Rappel : var_dump Permet d'afficher le contenu du tableau.
+            // exit() ou die () // Rappel : permet de stoper le programme à cet instant.
+
+            // si mes clé dans mon tableau sont diférent de vide alors je rentre dans mon test
             if(!empty($_POST['inputNom']) && !empty($_POST['inputPrenom']) && !empty($_POST['inputSexe'])){
-                echo "<div class='alert alert-success pagination-centered'>Le formulaire est valide</div>";
+
                 // Je crée une connexion a la base de donnée
                 $mysqli = new mysqli("localhost", "root", "root", "confhetic",3306);
 
-                //modification de l'encodage pour la gestion des accents
+                //modification de l'encodage pour la gestion des accents au cas ou la base de donnée est mal encoder 
                 $mysqli->set_charset("utf8");
 
                 // on affiche une erreur si la connexion ne fonctionne pas
                 if ($mysqli->connect_errno) {
                     echo "Echec lors de la connexion à MySQL : (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
                 }
-                $requeteSQL = "INSERT INTO participant (participant_prenom, participant_nom, participant_sexe) VALUES ('".$_POST['inputNom']."','".$_POST['inputPrenom']."','".$_POST['inputSexe']."')";
 
+                // Je déclare une chaine de caractère qui est ma requetes sql
+                // cette requête réalise l'insertion d'un nouveau participant INSERT INTO [Ma table] ([les champs que je souhaite remplir avec des virgules]) Values (leur corespondance avec des virgules. Ne pas oublier les "" pour les champs de type caractères).
+                $requeteSQL = "INSERT INTO participant (participant_prenom, participant_nom, participant_sexe) VALUES ('".$_POST['inputNom']."','".$_POST['inputPrenom']."','".$_POST['inputSexe']."')";
+                /* Ressource pour faire du sql */
+                //http://www.grafikart.fr/formation/mysql/insert-into
+                //http://www.w3schools.com/sql/sql_insert.asp
+
+                // Je donne l'ordre à ma base de donnée de récupèrer mes données définit dans $requeteSQL.
                 $result = $mysqli->query($requeteSQL);
 
+                // Si dans résult, j'ai quelque chose de différent qu'un tableau associatif qui corespond à true alors je rentre dans mon test.
                 if (!$result) {
-                    printf("%s\n", $mysqli->error);
-                    exit();
-                }
-
+                    // j'affiche l'erreur de retour 
+                    printf("%s\n", $mysqli->error); // printf fonctionne comme var_dump, il affiche juste moins de détail !!
+                    exit(); // je stop mon programme
+                }else{
+                    // J'affiche une chaine de caractère avec du html qui affiche comme quoi j'ai réussi l'insertion
+                    echo "<div class='alert alert-success pagination-centered'>Le formulaire est valide</div>";
+                } 
             }else{
-                if(empty($_POST['inputNom'])) $nameError = true;
-                if(empty($_POST['inputPrenom'])) $firstnameError = true;
-                if(empty($_POST['inputSexe'])) $sexeError = true;
+                // j'affiche un message comme quoi le formulaire n'est pas valide
                 echo "<div class='alert alert-error pagination-centered'>Le formulaire n'est pas valide</div>";
             }
         }
@@ -122,14 +137,14 @@
                 </tr>
             </thead>
             <tbody>
-                <?php while ($row = $result->fetch_assoc()) : ?>
-                <tr>
-                    <td><?= $row['participant_id'] ?></td>
-                    <td><?= $row['participant_nom'] ?></td>
-                    <td><?= $row['participant_prenom'] ?></td>
-                    <td><?= $row['participant_sexe'] ?></td>
-                </tr>
-                <?php endwhile?>
+                <?php foreach($result as $participant): ?>
+                 <tr>
+                            <td><?php echo $participant['participant_id'] ?></td>
+                            <td><?php echo $participant['participant_nom'] ?></td>
+                            <td><?php echo $participant['participant_prenom'] ?></td>
+                            <td><?php echo $participant['participant_sexe'] ?></td>
+                        </tr>  
+                <?php endforeach;?>
             </tbody>
         </tr>
         </table>
