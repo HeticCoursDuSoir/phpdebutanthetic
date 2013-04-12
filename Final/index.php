@@ -14,20 +14,20 @@
     <?php
         $nameError = false; $firstnameError = false; $sexeError = false;
         // On récupère la méthode POST dans un tableau associatif de type [Clé] <=> [Valeur]. 
-        // La clé est le name="" de l'input et value="" sa valeur.
+        // La clé est le name="" de l'input et sa valeur est value="".
         // Si mon tableau associatif est diférent de vide alors je rentre dans mon test.
         if(!empty($_POST)){
 
             //var_dump($_POST); // Rappel : var_dump Permet d'afficher le contenu du tableau.
             // exit() ou die () // Rappel : permet de stoper le programme à cet instant.
 
-            // si mes clé dans mon tableau sont diférent de vide alors je rentre dans mon test
+            // si les clés dans mon tableau sont diférentes de vide alors je rentre dans mon test
             if(!empty($_POST['inputNom']) && !empty($_POST['inputPrenom']) && !empty($_POST['inputSexe'])){
 
-                // Je crée une connexion a la base de donnée
+                // Je crée une connexion à la base de donnée
                 $mysqli = new mysqli("localhost", "root", "root", "confhetic",3306);
 
-                //modification de l'encodage pour la gestion des accents au cas ou la base de donnée est mal encoder 
+                //modification de l'encodage pour la gestion des accents au cas où la base de données est mal encodée 
                 $mysqli->set_charset("utf8");
 
                 // on affiche une erreur si la connexion ne fonctionne pas
@@ -35,27 +35,30 @@
                     echo "Echec lors de la connexion à MySQL : (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
                 }
 
-                // Je déclare une chaine de caractère qui est ma requetes sql
-                // cette requête réalise l'insertion d'un nouveau participant INSERT INTO [Ma table] ([les champs que je souhaite remplir avec des virgules]) Values (leur corespondance avec des virgules. Ne pas oublier les "" pour les champs de type caractères).
+                // Je déclare une chaîne de caractères qui est ma requête SQL
+                // cette requête réalise l'insertion d'un nouveau participant
+                // INSERT INTO [Ma table] ([les champs que je souhaite remplir avec des virgules])
+                // VALUES (leur corespondance avec des virgules. Ne pas oublier les "" pour les champs de type caractères).
                 $requeteSQL = "INSERT INTO participant (participant_prenom, participant_nom, participant_sexe) VALUES ('".$_POST['inputNom']."','".$_POST['inputPrenom']."','".$_POST['inputSexe']."')";
-                /* Ressource pour faire du sql */
+                /* Ressource pour faire du SQL */
                 //http://www.grafikart.fr/formation/mysql/insert-into
                 //http://www.w3schools.com/sql/sql_insert.asp
 
-                // Je donne l'ordre à ma base de donnée de récupèrer mes données définit dans $requeteSQL.
+                // Je donne l'ordre à ma base de données de récupèrer mes données définies dans $requeteSQL.
                 $result = $mysqli->query($requeteSQL);
 
-                // Si dans résult, j'ai quelque chose de différent qu'un tableau associatif qui corespond à true alors je rentre dans mon test.
+                // Si dans $result, j'ai quelque chose de différent qu'un tableau associatif qui corespond à TRUE (vrai) alors je rentre dans mon test.
                 if (!$result) {
                     // j'affiche l'erreur de retour 
                     printf("%s\n", $mysqli->error); // printf fonctionne comme var_dump, il affiche juste moins de détail !!
                     exit(); // je stop mon programme
                 }else{
-                    // J'affiche une chaine de caractère avec du html qui affiche comme quoi j'ai réussi l'insertion
+                    // J'affiche une chaine de caractères avec du HTML qui affiche que j'ai réussi l'insertion
                     echo "<div class='alert alert-success pagination-centered'>Le formulaire est valide</div>";
                 } 
-            }else{
-                // j'affiche un message comme quoi le formulaire n'est pas valide
+            } // sinon (si les clés du tableau sont vides)
+            else{
+                // j'affiche un message : le formulaire n'est pas valide
                 echo "<div class='alert alert-error pagination-centered'>Le formulaire n'est pas valide</div>";
             }
         }
@@ -113,18 +116,18 @@
         </header>
 
         <?php
-            //Récupère les enregistrement des participants dans la base de donnée
+            //Récupère les enregistrement des participants dans la base de données
 
-            //connexion à la base de donnée
+            //connexion à la base de données
             $mysqli = new mysqli("localhost", "root", "root", "confhetic",3306);
            
             // définit l'encodage de rendu
             $mysqli->set_charset("utf8");
 
-            // je crée ma requete sql
+            // je crée ma requête SQL
             $requeteSql = "SELECT * FROM participant";
             
-            // j'exécute ma requete sql
+            // j'exécute ma requête SQL
             $result = $mysqli->query($requeteSql);
         ?>
         <table class="table table-striped">
