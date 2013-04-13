@@ -140,8 +140,10 @@
                 </tr>
             </thead>
             <tbody>
+                <?php //Pour chaque résultat je récupère le participant courant et je le stock dans $participant?>
                 <?php foreach($result as $participant): ?>
                  <tr>
+                            <?php // J'affiche le contenu des clés du participant courant ( Les clés correspondent aux champs de la table dans la bdd )?>
                             <td><?php echo $participant['participant_id'] ?></td>
                             <td><?php echo $participant['participant_nom'] ?></td>
                             <td><?php echo $participant['participant_prenom'] ?></td>
